@@ -7,14 +7,14 @@ def depoly_monitor(ip):
 
     with paramiko.SSHClient() as client:
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(ip, 2092, 'lmx')
+        client.connect(ip, 22, 'root')
 
         stdin, stdout, stderr = client.exec_command('ls -l')
         print(stdout.readlines())
 
         with client.open_sftp() as sftp:
-            sftp.put('monitor.py', 'monitor.py')
-            sftp.chmod('monitor.py', 0o755)
+            sftp.put('depoly_monitor_with_paramiko.py', 'depoly_monitor_with_paramiko.py')
+            sftp.chmod('depoly_monitor_with_paramiko.py', 0o755)
 
 
 def main():

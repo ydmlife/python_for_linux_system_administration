@@ -1,15 +1,18 @@
-from fabric.api import run, sudo
-from fabric.api import env
+from fabric import SerialGroup as Group 
 
-env.hosts= ['10.166.224.14', '10.166.224.14']
-env.port= 2902
-env.user='lmx'
 
-def hostname():
-    run('hostname')
 
-def ls(path='.'):
-    run('ls {}'.format(path))
+def hostname(c):
+    c.run('hostname')
 
-def tail(path='/etc/passwd', line=10):
-    sudo('tail -n {0} {1}'.format(line, path))
+def ls(c, path='.'):
+    c.run('ls {}'.format(path))
+
+def tail(c, path='/etc/passwd', line=10):
+    c.sudo('tail -n {0} {1}'.format(line, path))
+
+
+for c in Group('10.8.100.3', '10.8.100.6'):
+    hostname(c)
+    ls(c)
+    tail(c)
