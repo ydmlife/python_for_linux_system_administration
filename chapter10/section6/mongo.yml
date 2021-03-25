@@ -14,7 +14,7 @@
       file: path={{ mongodb_datadir_prefix }} owner=mongodb group=mongodb state=directory
 
     - name: Install the mongodb package
-      apt: name={{ item }} state=installed
+      yum: name={{ item }} state=installed
       with_items:
         - mongodb-server
         - mongodb-clients

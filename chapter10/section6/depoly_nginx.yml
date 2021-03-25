@@ -1,21 +1,28 @@
 ---
 - hosts: webservers
+  remote_user: root
   become: yes
-  become_method: sudo
+  #become_method: sudo
   vars:
     worker_processes: 4
     worker_connections: 768
     max_open_files: 65506
   tasks:
+    - name: install yum-utils
+      yum: name=yum-utils update_cache=yes state=present
+
+    - name: copy nginx.repo to remote's /etc/yum.repos.d/
+      copy: src=/Users/yaodianmi/ansible_workspace/test_ansible/nginx.repo dest=/etc/yum.repos.d/
+
     - name: install nginx
-      apt: name=nginx update_cache=yes state=present
+      yum: name=nginx update_cache=yes state=present
 
     - name: copy nginx config file
-      template: src=/home/lmx/test_ansible/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+      template: src=/Users/yaodianmi/ansible_workspace/test_ansible/nginx.conf.j2 dest=/etc/nginx/nginx.conf
 
     - name: copy index.html
       template:
-        src: /home/lmx/test_ansible/index.html.j2
+        src: /Users/yaodianmi/ansible_workspace/test_ansible/index.html.j2
         dest: /usr/share/nginx/www/index.html
         mode: 0644
       notify: restart nginx

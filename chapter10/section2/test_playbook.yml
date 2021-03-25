@@ -12,7 +12,7 @@
     file: dest=/tmp/data.txt mode=500 owner=root group=root
 
   - name: ensure packages installed
-    apt: pkg={{ item }} state=present
+    yum: pkg={{ item }} state=present
     with_items:
       - tmux
       - git
